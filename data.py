@@ -20,7 +20,7 @@ def get_data(info, money):
     amount = "PENSION_PREM_PAID_TOT_AMT"
 
     #Columns that I want to keep
-    columns_csv = [ack_id, name, city, state, code, plan_name, size]
+    columns_csv = [ack_id, name, city, state, size, code, plan_name]
     columns_file = [ack_id, provider, amount]
 
     com = latest.loc[:, columns_csv]
