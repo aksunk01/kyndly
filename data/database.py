@@ -10,7 +10,7 @@ host = 'localhost'
 database = 'postgres'
 user = 'postgres'
 password = 'jcpsAS4686'
-port = '5435'
+port = '5432'
 
 create_table = '''
 CREATE TABLE company_2024(
@@ -49,13 +49,12 @@ try:
     print("Connection established")
     print("Starting...")
     
-
     
-
     
-    data_frame = d.get_data(f_2022, sch_A_2022)
+   
+    data_frame = d.get_data(f_2024, sch_A_2024)
 
-    data_frame['year'] = 2022
+    data_frame['year'] = 2024
     
     data_frame.columns = data_frame.columns.str.lower()
     
@@ -66,8 +65,10 @@ try:
     print("Data inserted")
     
     
-
+    
+    
     connection.commit()
+    print("Tables Created")
 
     
 except Exception as e:
