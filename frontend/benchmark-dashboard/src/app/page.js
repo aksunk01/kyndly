@@ -2,18 +2,7 @@
 // pages/index.js
 import { useState, useEffect } from "react"
 import Head from "next/head"
-import {
-  Bar,
-  BarChart,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts"
+import {  Bar,  BarChart,  LineChart,  Line,  XAxis,  YAxis,  CartesianGrid,  Tooltip,  Legend,  ResponsiveContainer,} from "recharts"
 import { CSVLink } from "react-csv"
 
 // Sample data
