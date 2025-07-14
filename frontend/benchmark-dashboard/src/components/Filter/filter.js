@@ -1,21 +1,7 @@
 "use client"
 import React from "react"
 
-export default function FilterSection({
-  geography,
-  businessType,
-  companySize,
-  currentFee,
-  geographies,
-  businessTypes,
-  companySizes,
-  dropdownOpen,
-  toggle,
-  handleSelect,
-  setCurrentFee,
-  resetFilters,
-  dropdownStyles,
-}) {
+export default function FilterSection({  geography,  businessType,  companySize,  currentFee,  geographies,  businessTypes,  companySizes,  dropdownOpen,  toggle,  handleSelect,  setCurrentFee,  resetFilters,  dropdownStyles,}) {
   return (
     <div className="bg-gray-100 p-6 rounded-lg mb-8">
       <div className="flex flex-wrap justify-between items-center mb-4">

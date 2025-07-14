@@ -8,7 +8,7 @@ import { CSVLink } from "react-csv"
 import FilterSection from "@/components/Filter/filter.js"
 import BenchmarkCharts from "@/components/Chart/chart.js"
 import FeeBenchmarkTable from "@/components/Data/data.js"
-import sampleData from "@/app/sampledata"
+
 
 export default function Home() {
   const [geography, setGeography] = useState("")
@@ -17,9 +17,10 @@ export default function Home() {
   const [currentFee, setCurrentFee] = useState("")
   const [dropdownOpen, setDropdownOpen] = useState({ geography: false, businessType: false, companySize: false })
 
-  const geographies = Array.from(new Set(sampleData.map(item => item.geography)))
-  const businessTypes = Array.from(new Set(sampleData.map(item => item.businessType)))
-  const companySizes = Array.from(new Set(sampleData.map(item => item.companySize)))
+  const [geographies, setGeographies] = useState([]);
+  const [businessTypes, setBusinessTypes] = useState([]);
+  const [companySizes, setCompanySizes] = useState([]);
+  const [filteredData, setFilterData] = useState([]);
 
   const toggle = (type) => {
     setDropdownOpen(prev => ({ ...prev, [type]: !prev[type] }))
@@ -51,25 +52,75 @@ export default function Home() {
     }
   }
 
-  const filteredData = sampleData.filter(item =>
-    (geography === "" || item.geography === geography) &&
-    (businessType === "" || item.businessType === businessType) &&
-    (companySize === "" || item.companySize === companySize)
-  )
+  // Fetch filter options on mount
+
+  useEffect(() =>{
+    const fetchFilters = async() =>{
+      try{
+        const response = await fetch("http://localhost:5000/api/filters")
+        const data = await response.json()
+
+        setGeographies(data.states)
+        setBusinessTypes(data.businessTypes)
+        setCompanySizes(data.companySizes)
+      }catch (error){
+        console.error("Error fetching filters:", error)
+      }
+    }
+
+    fetchFilters()
+  }, [])
+
+
+  //Fetch benchmark data when filters change
+  useEffect(()=>{
+    const fetchData = async () =>{
+      try{
+        const params = new URLSearchParams()
+        if (geography) params.append("state", geography)
+        if (businessType) params.append("businessType", businessType)
+        if (companySize) params.append("companySize", companySize)
+        
+        const response = await fetch(`http://localhost:5000/api/data?${params.toString()}`)
+        const data = await response.json()
+
+        //Map api data to existing frontend shape
+        const transformedData = data.map(item => ({
+          id: item.id,
+          geography: item.state,
+          businessType: item.businessType,
+          companySize: item.companySize.toString(),
+          percentile25: item.percentile25,
+          median: item.median,
+          percentile75: item.percentile75,
+          quarter: item.quarter
+        }))
+
+        setFilterData(transformedData)
+      }catch (error){
+        console.error("Error fetching benchmark data", error)
+      }
+    }
+
+    fetchData()
+
+  }, [geography, businessType, companySize])
 
   const chartData = [
-    { name: "25th %ile", value: filteredData.length ? filteredData[0].percentile25 : 0 },
-    { name: "Median", value: filteredData.length ? filteredData[0].median : 0 },
-    { name: "75th %ile", value: filteredData.length ? filteredData[0].percentile75 : 0 },
-    ...(currentFee ? [{ name: "Your Fee", value: parseFloat(currentFee) }] : [])
+    {name: "25th %ile", value: filteredData.length ? filteredData[0].percentile25: 0},
+    {name: "Median", value: filteredData.length ? filteredData[0].median: 0},
+    {name: "75th %ile", value: filteredData.length ? filteredData[0].percentile75: 0},
+    ...(currentFee ? [{name: "Your Fee", value: parseFloat(currentFee)}]: [])
   ]
 
-  const trendData = filteredData.map(item => ({
+  const trendData = filteredData.map(item=> ({
     quarter: item.quarter,
     "25th Percentile": item.percentile25,
     "Median": item.median,
     "75th Percentile": item.percentile75
   }))
+
+ 
 
   return (
     <main className="container mx-auto p-6">
