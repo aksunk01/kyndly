@@ -50,11 +50,10 @@ try:
     print("Starting...")
     
     
-    
-   
-    data_frame = d.get_data(f_2024, sch_A_2024)
+ 
+    data_frame = d.get_data(f_2022, sch_A_2022)
 
-    data_frame['year'] = 2024
+    data_frame['year'] = 2022
     
     data_frame.columns = data_frame.columns.str.lower()
     
@@ -64,7 +63,11 @@ try:
     data_frame.to_sql('company_2024', engine, if_exists='append', index = False)
     print("Data inserted")
     
+       
+   
+   
     
+
     
     
     connection.commit()

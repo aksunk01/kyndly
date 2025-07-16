@@ -47,7 +47,7 @@ def get_data():
         with conn.cursor() as cur:
             query = """
                 SELECT 
-                    id, 
+                    ack_id, 
                     sponsor_dfe_name as company,
                     spons_dfe_mail_us_city as city,
                     spons_dfe_mail_us_state as state,
@@ -79,7 +79,7 @@ def get_data():
                 params.append(int(company_size))
             
             # Order by id
-            query += " ORDER BY id"
+            query += " ORDER BY ack_id"
             
             cur.execute(query, params)
             results = cur.fetchall()
@@ -91,7 +91,7 @@ def get_data():
                 fee = row["fee"] if row["fee"] is not None else 0
                 
                 data.append({
-                    "id": row["id"],
+                    "ack_id": row["ack_id"],
                     "state": row["state"],
                     "city": row["city"],
                     "businessType": row["businesstype"],
@@ -129,7 +129,7 @@ def get_filters():
             
             # Get cities (filtered by state if provided)
             if state:
-                cur.execute("SELECT DISTINCT spons_dfe_mail_us_city FROM company_2024 WHERE spons_dfe_mail_us_state = %s AND spons_dfe_mail_us_city IS NOT NULL ORDER BY spons_dfe_mail_us_city", [state])
+                cur.execute("SELECT DISTINCT spons_dfe_mail_us_city FROM  company_2024 WHERE spons_dfe_mail_us_state = %s AND spons_dfe_mail_us_city IS NOT NULL ORDER BY spons_dfe_mail_us_city", [state])
             else:
                 cur.execute("SELECT DISTINCT spons_dfe_mail_us_city FROM company_2024 WHERE spons_dfe_mail_us_city IS NOT NULL ORDER BY spons_dfe_mail_us_city")
             cities = [row["spons_dfe_mail_us_city"] for row in cur.fetchall()]
