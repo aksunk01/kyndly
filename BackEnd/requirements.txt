@@ -183,10 +183,7 @@ SQLAlchemy==2.0.41
 stack-data==0.6.3
 streamlit==1.45.1
 tenacity==9.1.2
-tensorboard==2.19.0
-tensorboard-data-server==0.7.2
-tensorflow==2.19.0
-tensorflow-io-gcs-filesystem==0.31.0
+
 termcolor==3.1.0
 terminado==0.18.1
 tinycss2==1.4.0
@@ -218,4 +215,5 @@ win32_setctime==1.2.0
 wrapt==1.17.2
 yfinance==0.2.65
 zipp==3.22.0
+
 
