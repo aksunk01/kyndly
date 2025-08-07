@@ -57,7 +57,7 @@ export default function Home() {
   useEffect(() =>{
     const fetchFilters = async() =>{
       try{
-        const response = await fetch("http://localhost:5000/api/filters")
+        const response = await fetch("https://kyndly.onrender.com/api/filters")
         const data = await response.json()
 
         setGeographies(data.states)
@@ -81,7 +81,7 @@ export default function Home() {
         if (businessType) params.append("businessType", businessType)
         if (companySize) params.append("companySize", companySize)
         
-        const response = await fetch(`http://localhost:5000/api/data?${params.toString()}`)
+        const response = await fetch(`https://kyndly.onrender.com/api/data?${params.toString()}`)
         const data = await response.json()
 
         //Map api data to existing frontend shape
